@@ -9,7 +9,9 @@ export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+    return this.prisma.product.create({
+      data: createProductDto,
+    });
   }
 
   findAll() {
@@ -24,11 +26,14 @@ export class ProductsService {
     return product;
   }
 
-  update(id: string, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  update(productId: string, updateProductDto: UpdateProductDto) {
+    return this.prisma.product.update({
+      data: updateProductDto,
+      where: { productId },
+    });
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} product`;
+  remove(productId: string) {
+    return this.prisma.product.delete({ where: { productId } });
   }
 }

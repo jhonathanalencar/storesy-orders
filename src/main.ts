@@ -11,6 +11,6 @@ async function bootstrap() {
     new ErrorExceptionFilter(httpAdapter),
     new PrismaExceptionFilter(),
   );
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();
