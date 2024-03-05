@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  product_id  String      @id @default(uuid())
+  name        String
+  description String
+  price       Decimal     @db.Decimal(10, 2)
+  image_url   String
+  discount_id String
+  discount    Discount    @relation(fields: [discount_id], references: [discount_id])
+  items       OrderItem[]
+
+  @@map("product")
+}
+
+model Discount {
+  discount_id String    @id @default(uuid())
+  percent     Int       @default(0)
+  active      Boolean   @default(false)
+  products    Product[]
+
+  @@map("discount")
+}
+
+enum Status {
+  PENDING
+  PAID
+  FAILED
+}
+
+model Order {
+  order_id    String      @id @default(uuid())
+  customer_id String
+  total       Decimal
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  status      Status      @default(PENDING)
+  items       OrderItem[]
+
+  @@map("order")
+}
+
+model OrderItem {
+  order_item_id String  @id @default(uuid())
+  order_id      String
+  product_id    String
+  quantity      Int
+  price         Decimal @db.Decimal(10, 2)
+  order         Order   @relation(fields: [order_id], references: [order_id])
+  product       Product @relation(fields: [product_id], references: [product_id])
+
+  @@map("order_item")
+}
