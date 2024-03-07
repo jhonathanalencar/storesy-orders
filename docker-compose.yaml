@@ -8,3 +8,5 @@ services:
       - MYSQL_DATABASE=ordersDB
     ports:
       - 3306:3306
+    volumes:
+      - './.docker/mysqldata:/var/lib/mysql'

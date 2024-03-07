@@ -39,3 +39,37 @@ Content-Type: application/json
 
 // @name deleteProduct
 DELETE http://localhost:4000/products/{{productId}}
+
+###
+
+// @name createOrder
+POST http://localhost:4000/orders
+Authorization: Bearer userId
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": "069c0ce9-d8ee-400e-ab16-604302e6f3dd",
+      "quantity": 2
+    },
+    {
+      "productId": "1c8d5f5b-2df6-4f4a-bcee-8fb79e5db1bb",
+      "quantity": 3
+    }
+  ]
+}
+
+###
+
+@orderId = {{createOrder.response.body.orderId}}
+
+// @name listAllOrders
+GET http://localhost:4000/orders
+Authorization: Bearer userId
+
+###
+
+// @name findOrderById
+GET http://localhost:4000/orders/118001b8-38b1-43fc-9ab0-47112b17dbab
+Authorization: Bearer userId
