@@ -4,6 +4,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotFoundError } from '../errors/not-found.error';
 import { Order } from './entities/order.entity';
+import { calculateProductDiscount } from '../helpers/calculate-product-discount.helper';
 
 @Injectable()
 export class OrdersService {
@@ -17,6 +18,9 @@ export class OrdersService {
           in: productIds,
         },
       },
+      include: {
+        discount: true,
+      },
     });
     if (products.length !== productIds.length) {
       throw new NotFoundError('Product not found');
@@ -26,7 +30,14 @@ export class OrdersService {
       const product = products.find(
         (product) => product.productId === item.productId,
       );
-      order.addItem(product.productId, item.quantity, Number(product.price));
+      order.addItem(
+        product.productId,
+        item.quantity,
+        calculateProductDiscount(
+          Number(product.price),
+          product.discount?.percent ?? 0,
+        ),
+      );
     });
     order.calculateTotal();
     await this.prisma.order.create({

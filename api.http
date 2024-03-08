@@ -48,6 +48,7 @@ Authorization: Bearer userId
 Content-Type: application/json
 
 {
+  "cardHash": "abcd1234",
   "items": [
     {
       "productId": "069c0ce9-d8ee-400e-ab16-604302e6f3dd",

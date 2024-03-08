@@ -12,6 +12,7 @@ export type OrderStatusType = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 export class Order {
   private items: OrderItem[] = [];
+  private tax: number = 20;
 
   constructor(
     readonly orderId: string,
@@ -49,8 +50,8 @@ export class Order {
     const total = this.items.reduce((acc, value) => {
       acc += value.price * value.quantity;
       return acc;
-    }, 0);
-    this.total = total;
-    return total;
+    }, 0 + this.tax);
+    this.total = Math.floor(total * 100) / 100;
+    return Math.floor(total * 100) / 100;
   }
 }
