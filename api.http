@@ -72,5 +72,5 @@ Authorization: Bearer userId
 ###
 
 // @name findOrderById
-GET http://localhost:4000/orders/118001b8-38b1-43fc-9ab0-47112b17dbab
+GET http://localhost:4000/orders/{{orderId}}
 Authorization: Bearer userId

@@ -4,5 +4,5 @@ export function calculateProductDiscount(
 ) {
   const discount = productPrice * (discountPercent / 100);
   const priceWithDiscount = productPrice - discount;
-  return priceWithDiscount;
+  return Math.floor(priceWithDiscount * 100) / 100;
 }

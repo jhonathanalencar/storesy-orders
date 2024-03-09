@@ -85,7 +85,11 @@ export class OrdersService {
         },
       },
       include: {
-        items: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
       },
     });
     if (!orderFound) throw new NotFoundError('Order not found');
@@ -100,6 +104,22 @@ export class OrdersService {
       order.addItem(item.productId, item.quantity, Number(item.price));
     }
     order.calculateTotal();
-    return order;
+    return {
+      orderId: order.orderId,
+      customerId: order.customerId,
+      status: order.status,
+      total: order.getTotal(),
+      createdAt: order.createdAt,
+      items: orderFound.items.map((item) => {
+        return {
+          orderItemId: item.orderItemId,
+          productId: item.productId,
+          quantity: item.quantity,
+          price: Number(item.price),
+          name: item.product.name,
+          imageUrl: item.product.imageUrl,
+        };
+      }),
+    };
   }
 }

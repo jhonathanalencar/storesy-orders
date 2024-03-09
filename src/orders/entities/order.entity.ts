@@ -46,6 +46,10 @@ export class Order {
     return this.items;
   }
 
+  getTotal() {
+    return this.total;
+  }
+
   calculateTotal() {
     const total = this.items.reduce((acc, value) => {
       acc += value.price * value.quantity;
