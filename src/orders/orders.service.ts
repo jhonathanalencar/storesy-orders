@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 
 import { CreateOrderDto } from './dto/create-order.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -8,7 +9,10 @@ import { calculateProductDiscount } from '../helpers/calculate-product-discount.
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly amqpConnection: AmqpConnection,
+  ) {}
 
   async create(createOrderDto: CreateOrderDto, customerId: string) {
     const productIds = createOrderDto.items.map((item) => item.productId);
@@ -40,17 +44,24 @@ export class OrdersService {
       );
     });
     order.calculateTotal();
-    await this.prisma.order.create({
-      data: {
-        orderId: order.orderId,
-        customerId,
-        total: order.calculateTotal(),
-        items: {
-          createMany: {
-            data: order.getItems(),
+    await this.prisma.$transaction(async (tx) => {
+      await tx.order.create({
+        data: {
+          orderId: order.orderId,
+          customerId,
+          total: order.calculateTotal(),
+          items: {
+            createMany: {
+              data: order.getItems(),
+            },
           },
         },
-      },
+      });
+      await this.amqpConnection.publish('amq.direct', 'OrderCreated', {
+        orderId: order.orderId,
+        cardHash: createOrderDto.cardHash,
+        total: order.getTotal(),
+      });
     });
     return order;
   }
