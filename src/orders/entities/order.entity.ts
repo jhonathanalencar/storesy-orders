@@ -17,7 +17,7 @@ export class Order {
   constructor(
     readonly orderId: string,
     readonly customerId: string,
-    readonly status: OrderStatusType,
+    private status: OrderStatusType,
     private total: number,
     readonly createdAt: Date,
   ) {}
@@ -57,5 +57,29 @@ export class Order {
     }, 0 + this.tax);
     this.total = Math.floor(total * 100) / 100;
     return Math.floor(total * 100) / 100;
+  }
+
+  getStatus() {
+    return this.status;
+  }
+
+  pay() {
+    if (this.status === OrderStatus.PAID) {
+      throw new Error('Order already paid');
+    }
+    if (this.status === OrderStatus.FAILED) {
+      throw new Error('Order already failed');
+    }
+    this.status = 'PAID';
+  }
+
+  fail() {
+    if (this.status === OrderStatus.FAILED) {
+      throw new Error('Order already failed');
+    }
+    if (this.status === OrderStatus.PAID) {
+      throw new Error('Order already paid');
+    }
+    this.status = 'FAILED';
   }
 }

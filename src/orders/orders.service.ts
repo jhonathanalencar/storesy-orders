@@ -118,7 +118,7 @@ export class OrdersService {
     return {
       orderId: order.orderId,
       customerId: order.customerId,
-      status: order.status,
+      status: order.getStatus(),
       total: order.getTotal(),
       createdAt: order.createdAt,
       items: orderFound.items.map((item) => {
@@ -132,5 +132,51 @@ export class OrdersService {
         };
       }),
     };
+  }
+
+  async pay(orderId: string) {
+    const orderFound = await this.prisma.order.findUnique({
+      where: {
+        orderId,
+      },
+    });
+    if (!orderFound) throw new NotFoundError('Order not found');
+    const order = Order.restore(
+      orderFound.orderId,
+      orderFound.customerId,
+      orderFound.status,
+      Number(orderFound.total),
+      orderFound.createdAt,
+    );
+    order.pay();
+    await this.prisma.order.update({
+      data: {
+        status: order.getStatus(),
+      },
+      where: { orderId },
+    });
+  }
+
+  async fail(orderId: string) {
+    const orderFound = await this.prisma.order.findUnique({
+      where: {
+        orderId,
+      },
+    });
+    if (!orderFound) throw new NotFoundError('Order not found');
+    const order = Order.restore(
+      orderFound.orderId,
+      orderFound.customerId,
+      orderFound.status,
+      Number(orderFound.total),
+      orderFound.createdAt,
+    );
+    order.fail();
+    await this.prisma.order.update({
+      data: {
+        status: order.getStatus(),
+      },
+      where: { orderId },
+    });
   }
 }

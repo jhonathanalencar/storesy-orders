@@ -52,11 +52,11 @@ Content-Type: application/json
   "items": [
     {
       "productId": "069c0ce9-d8ee-400e-ab16-604302e6f3dd",
-      "quantity": 2
+      "quantity": 12
     },
     {
       "productId": "1c8d5f5b-2df6-4f4a-bcee-8fb79e5db1bb",
-      "quantity": 3
+      "quantity": 13
     }
   ]
 }
