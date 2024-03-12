@@ -40,6 +40,43 @@ export class OrderConsumer {
         await this.amqpConnection.publish('amq.direct', 'PaymentFail', {
           error: error.message,
           orderId: msg.orderId,
+          status: msg.status,
+        });
+        return new Nack(false);
+      }
+      return new Nack(true);
+    }
+  }
+
+  @RabbitSubscribe({
+    exchange: 'amq.direct',
+    routingKey: 'PaymentFail',
+    queue: 'errors',
+  })
+  async retry(msg: {
+    error: string;
+    orderId: string;
+    status: OrderStatusType;
+  }) {
+    console.log('Message:', msg);
+    try {
+      if (msg.error === 'Order not found') {
+        const order = await this.ordersService.findById(msg.orderId);
+        if (!order) {
+          return new Nack(false);
+        }
+        await this.amqpConnection.publish('amq.direct', 'PaymentCompleted', {
+          orderId: msg.orderId,
+          status: msg.status,
+        });
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof CustomError) {
+        await this.amqpConnection.publish('amq.direct', 'PaymentFail', {
+          error: error.message,
+          orderId: msg.orderId,
         });
         return new Nack(false);
       }

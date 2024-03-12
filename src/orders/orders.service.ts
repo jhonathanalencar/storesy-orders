@@ -134,6 +134,50 @@ export class OrdersService {
     };
   }
 
+  async findById(orderId: string) {
+    const orderFound = await this.prisma.order.findUnique({
+      where: {
+        orderId,
+      },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+    if (!orderFound) throw new NotFoundError('Order not found');
+    const order = Order.restore(
+      orderFound.orderId,
+      orderFound.customerId,
+      orderFound.status,
+      Number(orderFound.total),
+      orderFound.createdAt,
+    );
+    for (const item of orderFound.items) {
+      order.addItem(item.productId, item.quantity, Number(item.price));
+    }
+    order.calculateTotal();
+    return {
+      orderId: order.orderId,
+      customerId: order.customerId,
+      status: order.getStatus(),
+      total: order.getTotal(),
+      createdAt: order.createdAt,
+      items: orderFound.items.map((item) => {
+        return {
+          orderItemId: item.orderItemId,
+          productId: item.productId,
+          quantity: item.quantity,
+          price: Number(item.price),
+          name: item.product.name,
+          imageUrl: item.product.imageUrl,
+        };
+      }),
+    };
+  }
+
   async pay(orderId: string) {
     const orderFound = await this.prisma.order.findUnique({
       where: {
