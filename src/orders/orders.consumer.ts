@@ -77,6 +77,7 @@ export class OrderConsumer {
         await this.amqpConnection.publish('amq.direct', 'PaymentFail', {
           error: error.message,
           orderId: msg.orderId,
+          status: msg.status,
         });
         return new Nack(false);
       }

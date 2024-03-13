@@ -6,6 +6,13 @@ import { Global, Module } from '@nestjs/common';
   imports: [
     RabbitMQModule.forRoot(RabbitMQModule, {
       uri: 'amqp://admin:admin@localhost:5672',
+      queues: [
+        {
+          name: 'orders',
+          exchange: 'amq.direct',
+          routingKey: 'OrderCreated',
+        },
+      ],
     }),
   ],
   exports: [RabbitMQModule],
