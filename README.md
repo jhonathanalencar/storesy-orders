@@ -15,6 +15,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [NestJS](https://nestjs.com/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [RabbitMQ](https://www.rabbitmq.com/)
+- [MySQL](https://www.mysql.com/)
 - [Prisma](https://www.prisma.io/)
 - [Zod](https://zod.dev/)
 
