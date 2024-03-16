@@ -1,73 +1,91 @@
+<h1 align="center">Storesy Orders API</h1>
+
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=ac7c59&labelColor=4b2428">
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 💻 Projeto
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Sistema para criação de pedidos.
 
-## Description
+## 🧪 Tecnologias
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Esse projeto foi desenvolvido com as seguintes tecnologias:
 
-## Installation
+- [NestJS](https://nestjs.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [RabbitMQ](https://www.rabbitmq.com/)
+- [Prisma](https://www.prisma.io/)
+- [Zod](https://zod.dev/)
+
+## 🚀 Como executar
 
 ```bash
+# Clone este repositório
+$ git clone https://github.com/jhonathanalencar/storesy-orders.git
+
+# Entre na pasta
+$ cd storesy-orders
+
+# Instale as dependências
 $ npm install
+
+# Copie e preencha as variáveis de ambiente do arquivo .env.example em um arquivo .env
+
+# Crie e inicie os containers
+$ docker compose up
+
+# Execute a aplicação em modo de desenvolvimento
+$ npm run dev
+
+# A aplicação inciará na porta:4000
+acesse <http://localhost:4000>
 ```
 
-## Running the app
+## Rotas da aplicação
 
-```bash
-# development
-$ npm run start
+### Product
 
-# watch mode
-$ npm run start:dev
+- [x] GET `/products`
 
-# production mode
-$ npm run start:prod
-```
+  List products
 
-## Test
+- [x] POST `/products`
 
-```bash
-# unit tests
-$ npm run test
+  Create product
 
-# e2e tests
-$ npm run test:e2e
+- [x] GET `/products/:id`
 
-# test coverage
-$ npm run test:cov
-```
+  Get product by ID
 
-## Support
+- [x] PATCH `/products/:id`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+  Update product
 
-## Stay in touch
+- [x] DELETE `/products/:id`
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+  Delete product
 
-## License
+### Order
 
-Nest is [MIT licensed](LICENSE).
+- [x] GET `/orders`
+
+  List orders
+
+- [x] POST `/orders`
+
+  Create order
+
+- [x] GET `/orders/:id`
+
+  Get order by ID
+
+## 📝 Licença
+
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/87830705/254344973-58fb1280-be15-4847-95bd-c99236abdb4b.png" width="5%">
+</p>
